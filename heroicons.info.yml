@@ -1,0 +1,5 @@
+name: 'Heroicons'
+type: module
+description: 'Provides a field type for Heroicons.'
+core_version_requirement: ^10
+package: Custom
