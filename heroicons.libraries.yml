@@ -1,0 +1,6 @@
+heroicon_preview_alpine:
+  version: 1.x
+  js:
+    js/heroicon_preview_alpine.js: {}
+  dependencies:
+    - core/drupal
