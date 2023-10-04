@@ -1,0 +1,12 @@
+{
+	"name": "drupal/heroicons",
+	"type": "drupal-module",
+	"description": "A custom Drupal 10 module that provides a new field type for integrating Heroicons",
+	"keywords": [],
+	"homepage": "https://github.com/sinyayadynya/heroicons",
+	"minimum-stability": "dev",
+	"require": {
+		"ext-dom": "*",
+		"ext-libxml": "*"
+	}
+}
