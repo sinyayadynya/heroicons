@@ -1,5 +1,7 @@
 name: 'Heroicons'
 type: module
-description: 'Provides a field type for Heroicons.'
-core_version_requirement: ^10
+description: 'Provides a field type for selecting and displaying Heroicons.'
 package: Custom
+core_version_requirement: ^10
+dependencies:
+  - drupal:field:core (>=10.0)
