@@ -1,0 +1,20 @@
+{#
+/**
+ * @file
+ * Default theme implementation to display the 'heroicons' field.
+ *
+ * Available variables:
+ * - items: List of heroicons field items. Use 'item.content' to print them.
+ * - attributes: HTML attributes for the containing element.
+ *
+ * @see template_preprocess_field()
+ *
+ * @ingroup themeable
+ */
+#}
+
+<div{{ attributes.addClass('heroicons-field') }}>
+  {% for item in items %}
+    {{ item.content|raw }}
+  {% endfor %}
+</div>
