@@ -1,6 +1,4 @@
-heroicon_preview_alpine:
-  version: 1.x
+alpine:
+  version: 3.x
   js:
-    js/heroicon_preview_alpine.js: {}
-  dependencies:
-    - core/drupal
+    https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js: { type: external, minified: true }
