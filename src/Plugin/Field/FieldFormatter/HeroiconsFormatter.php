@@ -70,23 +70,42 @@ class HeroiconsFormatter extends FormatterBase implements ContainerFactoryPlugin
     $elements = [];
     $logger = $this->loggerFactory->get('heroicons');
     foreach ($items as $delta => $item) {
-      $icon_name = $item->icon_name;
-      $icon_style = $item->icon_style == 'mini' ? 'solid' : $item->icon_style;  // Adjust the icon_style for mini
-      $icon_size = $item->icon_style == 'mini' ? '20' : '24';  // Adjust the icon_size for mini
-      $icon_path = $this->moduleHandler->getModule('heroicons')->getPath() . "/icons/$icon_size/$icon_style/$icon_name.svg";
-      $logger->info('Icon path: @icon_path', ['@icon_path' => $icon_path]);
-      if (file_exists($icon_path)) {
-        $svg_content = file_get_contents($icon_path);
-        $logger->info('SVG Content: @svg_content', ['@svg_content' => $svg_content]);
-        $elements[$delta] = [
-          '#markup' => $svg_content,
-          '#allowed_tags' => ['svg', 'path'],
-        ];
-      } else {
-        $logger->error('File not found: @icon_path', ['@icon_path' => $icon_path]);
-      }
+        $icon_name = $item->icon_name;
+
+        // Determine icon style and size. New case added for 'micro'.
+        switch ($item->icon_style) {
+            case 'mini':
+                $icon_style = 'solid'; // Mini icons use 'solid' style.
+                $icon_size = '20'; // Mini icons are in the '20' directory.
+                break;
+            case 'micro':
+                $icon_style = 'solid'; // Micro icons also use 'solid' style.
+                $icon_size = '16'; // New case for 'micro' size.
+                break;
+            case 'solid':
+            case 'outline':
+                $icon_style = $item->icon_style;
+                $icon_size = '24'; // Default size for solid and outline.
+                break;
+            default:
+                $icon_style = 'solid'; // Fallback to solid style.
+                $icon_size = '24'; // Fallback size.
+        }
+
+        $icon_path = $this->moduleHandler->getModule('heroicons')->getPath() . "/icons/$icon_size/$icon_style/$icon_name.svg";
+
+        if (file_exists($icon_path)) {
+            $svg_content = file_get_contents($icon_path);
+            $elements[$delta] = [
+                '#markup' => $svg_content,
+                '#allowed_tags' => ['svg', 'path'],
+            ];
+        } else {
+            $logger->error('File not found: @icon_path', ['@icon_path' => $icon_path]);
+        }
     }
     return $elements;
 }
+
 
 }

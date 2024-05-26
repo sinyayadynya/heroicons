@@ -88,6 +88,7 @@ class HeroiconsWidget extends WidgetBase implements ContainerFactoryPluginInterf
         'outline' => $this->t('Outline'),
         'solid' => $this->t('Solid'),
         'mini' => $this->t('Mini'),
+        'micro' => $this->t('Micro'),
       ],
     ];
 
@@ -102,9 +103,10 @@ class HeroiconsWidget extends WidgetBase implements ContainerFactoryPluginInterf
 
     // Define the paths to the icon directories.
     $icon_directories = [
-      \Drupal::root() . '/' . $this->moduleHandler->getModule('heroicons')->getPath() . '/icons/20/solid',
-      \Drupal::root() . '/' . $this->moduleHandler->getModule('heroicons')->getPath() . '/icons/24/outline',
-      \Drupal::root() . '/' . $this->moduleHandler->getModule('heroicons')->getPath() . '/icons/24/solid',
+        \Drupal::root() . '/' . $this->moduleHandler->getModule('heroicons')->getPath() . '/icons/16/solid',
+        \Drupal::root() . '/' . $this->moduleHandler->getModule('heroicons')->getPath() . '/icons/20/solid',
+        \Drupal::root() . '/' . $this->moduleHandler->getModule('heroicons')->getPath() . '/icons/24/outline',
+        \Drupal::root() . '/' . $this->moduleHandler->getModule('heroicons')->getPath() . '/icons/24/solid',
     ];
 
     foreach ($icon_directories as $directory) {

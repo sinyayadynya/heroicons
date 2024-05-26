@@ -25,7 +25,7 @@ After enabling the module, you can add the Heroicons field to any entity type vi
 ### Field Settings
 
 - **Icon Name**: The name of the icon as defined by Heroicons library.
-- **Icon Style**: The style of the icon. Options are Solid, Outline, and Mini.
+- **Icon Style**: The style of the icon. Options are Solid, Outline, Mini and Micro.
 
 ## Usage
 
