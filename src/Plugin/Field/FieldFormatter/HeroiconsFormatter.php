@@ -106,6 +106,4 @@ class HeroiconsFormatter extends FormatterBase implements ContainerFactoryPlugin
     }
     return $elements;
 }
-
-
 }
