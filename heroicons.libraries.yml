@@ -1,7 +1,12 @@
 alpine:
+  remote: https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js
   version: 3.x
   js:
     https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js: { type: external, minified: true }
+  license:
+    name: MIT
+    url: https://github.com/alpinejs/alpine/blob/master/LICENSE
+    gpl-compatible: true
 
 alpine_virtual:
   remote: https://cdn.jsdelivr.net/npm/@alpinejs/virtual@3.x.x/dist/cdn.min.js
@@ -10,6 +15,10 @@ alpine_virtual:
     https://cdn.jsdelivr.net/npm/@alpinejs/virtual@3.x.x/dist/cdn.min.js: { type: external, minified: true }
   dependencies:
     - heroicons/alpine
+  license:
+    name: MIT
+    url: https://github.com/alpinejs/alpine/blob/master/LICENSE
+    gpl-compatible: true
 
 headless_ui:
   remote: https://cdn.jsdelivr.net/npm/@headlessui/alpine@1.0.7/dist/headlessui.min.js
@@ -18,6 +27,10 @@ headless_ui:
     https://cdn.jsdelivr.net/npm/@headlessui/alpine@1.0.7/dist/headlessui.min.js: { type: external, minified: true }
   dependencies:
     - heroicons/alpine
+  license:
+    name: MIT
+    url: https://github.com/tailwindlabs/headlessui/blob/main/LICENSE
+    gpl-compatible: true
 
 combobox:
   css:
