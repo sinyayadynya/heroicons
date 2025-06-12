@@ -1,0 +1,204 @@
+/**
+ * @file
+ * Heroicons Combobox styling.
+ */
+
+/* Base combobox container */
+.heroicons-combobox {
+  position: relative;
+  width: 100%;
+}
+
+/* Search input styling - Catalyst-inspired */
+.heroicons-combobox__input {
+  width: 100%;
+  padding: 10px 40px 10px 12px; /* Right padding for dropdown arrow */
+  border: 1px solid #d1d5db;
+  border-radius: 8px; /* Slightly more rounded like Catalyst */
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.5;
+  background-color: #ffffff;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  transition: all 0.15s ease-in-out;
+  appearance: none;
+}
+
+.heroicons-combobox__input:focus {
+  outline: none;
+  border-color: #2563eb; /* Slightly deeper blue like Catalyst */
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* Dropdown arrow icon */
+.heroicons-combobox::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 16px 16px;
+  pointer-events: none;
+  transition: transform 0.15s ease-in-out;
+}
+
+.heroicons-combobox[x-data] .heroicons-combobox__input:focus + *::after,
+.heroicons-combobox[data-open="true"]::after {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+/* Dropdown container - Catalyst-inspired */
+.heroicons-combobox__dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  margin-top: 4px;
+  max-height: 240px;
+  overflow: hidden; /* Let virtual scroll handle overflow */
+  background-color: #ffffff;
+  border: 1px solid #e5e7eb; /* Slightly lighter border like Catalyst */
+  border-radius: 8px; /* Match input border radius */
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Options list - Catalyst-inspired */
+.heroicons-combobox__options {
+  padding: 4px 0; /* Small padding like Catalyst */
+  margin: 0;
+  list-style: none;
+  position: relative;
+  max-height: 240px;
+  overflow-y: auto;
+}
+
+/* Virtual scroll container */
+.heroicons-combobox__options[x-virtual] {
+  scroll-behavior: smooth;
+  contain: layout style paint;
+}
+
+/* Individual option styling - Catalyst-inspired */
+.heroicons-combobox__option {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* Slightly more gap like Catalyst */
+  padding: 8px 12px;
+  cursor: pointer;
+  user-select: none;
+  font-size: 14px;
+  font-weight: 400;
+  color: #111827; /* Darker text like Catalyst */
+  transition: all 0.1s ease-in-out;
+  min-height: 40px; /* Slightly taller like Catalyst */
+  box-sizing: border-box;
+}
+
+.heroicons-combobox__option:hover,
+.heroicons-combobox__option--active {
+  background-color: #2563eb; /* Match the focus blue */
+  color: #ffffff;
+}
+
+.heroicons-combobox__option:hover .heroicons-combobox__icon,
+.heroicons-combobox__option--active .heroicons-combobox__icon {
+  color: #ffffff;
+}
+
+/* Selected option with checkmark (like Catalyst) */
+.heroicons-combobox__option[aria-selected="true"]::after {
+  content: '✓';
+  margin-left: auto;
+  font-weight: 600;
+  color: #2563eb;
+}
+
+.heroicons-combobox__option[aria-selected="true"]:hover::after,
+.heroicons-combobox__option[aria-selected="true"].heroicons-combobox__option--active::after {
+  color: #ffffff;
+}
+
+/* Icon styling within options */
+.heroicons-combobox__icon {
+  width: 16px;
+  height: 16px;
+  color: #6b7280;
+  flex-shrink: 0;
+}
+
+/* Option text */
+.heroicons-combobox__option-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Style selector (can remain as regular select) */
+.heroicons-combobox__style-select {
+  margin-top: 8px;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .heroicons-combobox__input {
+    background-color: #1f2937;
+    border-color: #374151;
+    color: #f9fafb;
+  }
+
+  .heroicons-combobox__input:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
+  }
+
+  .heroicons-combobox__dropdown {
+    background-color: #1f2937;
+    border-color: #374151;
+  }
+
+  .heroicons-combobox__option {
+    color: #f9fafb;
+  }
+
+  .heroicons-combobox__option:hover,
+  .heroicons-combobox__option--active {
+    background-color: #3b82f6;
+    color: #ffffff;
+  }
+
+  .heroicons-combobox__icon {
+    color: #9ca3af;
+  }
+}
+
+/* Transitions */
+.heroicons-combobox__dropdown[x-transition] {
+  transition: all 0.15s ease-out;
+}
+
+.heroicons-combobox__dropdown[x-transition]:not([x-transition]:last-child) {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
+/* Admin theme compatibility */
+.admin-ui .heroicons-combobox__input {
+  font-family: inherit;
+}
+
+.admin-ui .heroicons-combobox__option {
+  font-family: inherit;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .heroicons-combobox__dropdown {
+    max-height: 200px;
+  }
+}

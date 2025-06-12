@@ -1,0 +1,33 @@
+{#
+/**
+ * @file
+ * SVG sprite template for Heroicons.
+ *
+ * This template creates an SVG sprite containing all icon variations
+ * for use with the combobox component.
+ */
+#}
+<svg class="heroicons-sprite" style="position: absolute; width: 0; height: 0; pointer-events: none; visibility: hidden;">
+  <defs>
+    {% for style in ['solid', 'outline'] %}
+      {% set size = style == 'outline' ? '24' : '16' %}
+      {% for icon_name in sprite_icons %}
+        {% set icon_path = 'icons/' ~ size ~ '/' ~ style ~ '/' ~ icon_name ~ '.svg' %}
+        {% if icon_exists(icon_path) %}
+          {{ include_icon(icon_path, 'hi-' ~ style ~ '-' ~ icon_name)|raw }}
+        {% endif %}
+      {% endfor %}
+    {% endfor %}
+    
+    {# Also include 20px and 24px solid for mini/micro styles #}
+    {% for size in ['20', '24'] %}
+      {% for icon_name in sprite_icons %}
+        {% set icon_path = 'icons/' ~ size ~ '/solid/' ~ icon_name ~ '.svg' %}
+        {% if icon_exists(icon_path) %}
+          {% set style_name = size == '20' ? 'mini' : (size == '24' ? 'solid24' : 'micro') %}
+          {{ include_icon(icon_path, 'hi-' ~ style_name ~ '-' ~ icon_name)|raw }}
+        {% endif %}
+      {% endfor %}
+    {% endfor %}
+  </defs>
+</svg>

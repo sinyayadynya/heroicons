@@ -2,7 +2,133 @@
 
 /**
  * @file
- * This is the heroicons module.
+ * Heroicons module for Drupal.
  */
 
-// Your PHP code goes here if needed.
+use Drupal\Core\Routing\RouteMatchInterface;
+
+/**
+ * Implements hook_help().
+ */
+function heroicons_help($route_name, RouteMatchInterface $route_match) {
+  switch ($route_name) {
+    case 'help.page.heroicons':
+      return '<p>' . t('Provides a field type for selecting and displaying Heroicons with a searchable combobox interface.') . '</p>';
+  }
+}
+
+/**
+ * Implements hook_page_attachments().
+ */
+function heroicons_page_attachments(array &$attachments) {
+  // Get current route
+  $route_match = \Drupal::routeMatch();
+  $route_name = $route_match->getRouteName();
+  
+  // Attach sprite library to admin forms and entity edit forms
+  $admin_routes = [
+    'entity.node.edit_form',
+    'entity.node.add_form',
+    'entity.taxonomy_term.edit_form',
+    'entity.taxonomy_term.add_form',
+    'entity.user.edit_form',
+    'entity.block_content.edit_form',
+    'entity.block_content.add_form',
+    'entity.media.edit_form',
+    'entity.media.add_form',
+  ];
+  
+  // Also attach on admin pages that might contain field configuration
+  if (in_array($route_name, $admin_routes) || 
+      strpos($route_name, '.admin_') !== FALSE ||
+      strpos($route_name, 'field_ui.') !== FALSE) {
+    
+    $attachments['#attached']['library'][] = 'heroicons/sprite';
+    
+    // Add the sprite template
+    $sprite_icons = heroicons_get_all_icon_names();
+    $attachments['#attached']['html_head'][] = [
+      [
+        '#theme' => 'heroicons_sprite',
+        '#sprite_icons' => $sprite_icons,
+      ],
+      'heroicons_sprite'
+    ];
+  }
+}
+
+/**
+ * Implements hook_theme().
+ */
+function heroicons_theme($existing, $type, $theme, $path) {
+  return [
+    'heroicons_sprite' => [
+      'variables' => [
+        'sprite_icons' => [],
+      ],
+      'template' => 'heroicons-sprite',
+    ],
+  ];
+}
+
+/**
+ * Get all available icon names.
+ */
+function heroicons_get_all_icon_names() {
+  $module_path = \Drupal::service('extension.list.module')->getPath('heroicons');
+  $icon_directories = [
+    \Drupal::root() . '/' . $module_path . '/icons/16/solid',
+    \Drupal::root() . '/' . $module_path . '/icons/20/solid',
+    \Drupal::root() . '/' . $module_path . '/icons/24/outline',
+    \Drupal::root() . '/' . $module_path . '/icons/24/solid',
+  ];
+  
+  $icon_names = [];
+  
+  foreach ($icon_directories as $directory) {
+    if (is_dir($directory)) {
+      $files = glob("$directory/*.svg");
+      foreach ($files as $file) {
+        $icon_name = basename($file, '.svg');
+        if (!in_array($icon_name, $icon_names)) {
+          $icon_names[] = $icon_name;
+        }
+      }
+    }
+  }
+  
+  sort($icon_names);
+  return $icon_names;
+}
+
+/**
+ * Implements hook_preprocess_HOOK() for heroicons_sprite.
+ */
+function heroicons_preprocess_heroicons_sprite(&$variables) {
+  $module_path = \Drupal::service('extension.list.module')->getPath('heroicons');
+  $variables['module_path'] = $module_path;
+  
+  // Helper function to check if icon exists
+  $variables['icon_exists'] = function($icon_path) use ($module_path) {
+    return file_exists(\Drupal::root() . '/' . $module_path . '/' . $icon_path);
+  };
+  
+  // Helper function to include icon content with custom ID
+  $variables['include_icon'] = function($icon_path, $icon_id) use ($module_path) {
+    $full_path = \Drupal::root() . '/' . $module_path . '/' . $icon_path;
+    if (file_exists($full_path)) {
+      $svg_content = file_get_contents($full_path);
+      // Replace the opening svg tag with a symbol tag and add the ID
+      $svg_content = preg_replace(
+        '/<svg([^>]*)>/',
+        '<symbol id="' . $icon_id . '"$1>',
+        $svg_content,
+        1
+      );
+      // Replace closing svg tag with symbol
+      $svg_content = str_replace('</svg>', '</symbol>', $svg_content);
+      return $svg_content;
+    }
+    return '';
+  };
+}
