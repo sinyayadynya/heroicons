@@ -170,7 +170,10 @@ class HeroiconsWidget extends WidgetBase implements ContainerFactoryPluginInterf
         'aria-label' => $this->t('Available icons'),
         'style' => 'max-height: 240px; overflow-y: auto;',
       ],
-      '#value' => $this->buildVirtualOptionsTemplate(),
+      // Use #markup instead of #value to avoid HtmlTag rendering errors when
+      // Drupal expects a string value. buildVirtualOptionsTemplate() returns a
+      // HTML string used for the virtual scrolling template.
+      '#markup' => $this->buildVirtualOptionsTemplate(),
     ];
 
     // No results message
@@ -182,7 +185,9 @@ class HeroiconsWidget extends WidgetBase implements ContainerFactoryPluginInterf
         'x-show' => 'filtered.length === 0 && query.length > 0',
         'style' => 'padding: 12px; text-align: center; color: #6b7280; font-size: 14px;',
       ],
-      '#value' => $this->t('No icons found'),
+      // Ensure the rendered content is a string via #markup to satisfy the
+      // HtmlTag renderer introduced in newer Drupal versions.
+      '#markup' => $this->t('No icons found'),
     ];
 
     return $element;
