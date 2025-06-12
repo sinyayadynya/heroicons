@@ -173,7 +173,7 @@ class HeroiconsWidget extends WidgetBase implements ContainerFactoryPluginInterf
       // Use #markup instead of #value to avoid HtmlTag rendering errors when
       // Drupal expects a string value. buildVirtualOptionsTemplate() returns a
       // HTML string used for the virtual scrolling template.
-      '#markup' => $this->buildVirtualOptionsTemplate(),
+      '#markup' => (string) $this->buildVirtualOptionsTemplate(),
     ];
 
     // No results message
@@ -187,7 +187,7 @@ class HeroiconsWidget extends WidgetBase implements ContainerFactoryPluginInterf
       ],
       // Ensure the rendered content is a string via #markup to satisfy the
       // HtmlTag renderer introduced in newer Drupal versions.
-      '#markup' => $this->t('No icons found'),
+      '#markup' => (string) $this->t('No icons found'),
     ];
 
     return $element;
