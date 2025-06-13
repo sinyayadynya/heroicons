@@ -1,25 +1,17 @@
 # Heroicons Drupal Module
 
-This module integrates the [Heroicons](https://heroicons.com/) library into Drupal, providing a field type for selecting and displaying SVG icons with a modern, searchable interface.
+A modern Drupal field type for selecting and displaying [Heroicons](https://heroicons.com/) with a searchable, user-friendly interface.
 
 ## Features
 
 - **Searchable Interface**: Catalyst-style combobox with real-time search across 1,176+ icons
-- **SVG Previews**: 16×16px thumbnails of each icon in the dropdown for easy visual selection
+- **Visual Previews**: Real icon previews in the dropdown for easy visual selection
 - **Keyboard Navigation**: Full keyboard support with ↑↓ arrow keys, Enter, and Esc
-- **React/Catalyst Powered**: Modern component library with Headless UI integration
-- **Performance Optimized**: SVG sprite system for efficient icon loading
-- **Accessibility**: ARIA compliant with screen reader support
+- **Modern UI**: Built with React, HeadlessUI, and Catalyst design patterns
 - **Four Icon Styles**: Outline (24px), Solid (24px), Mini (20px), and Micro (16px)
-- **Inline SVG Rendering**: Icons rendered as inline SVG for easy styling and manipulation
-
-## Version 2.0 Highlights
-
-✨ **New in v2.0**: Complete implementation overhaul with React and Catalyst UI
-- Moved from Alpine.js to React with Catalyst UI components
-- Enhanced UI/UX with Tailwind's design system components
-- Improved accessibility through Headless UI React integration
-- Maintained full backward compatibility
+- **Performance Optimized**: Dynamic icon loading with code-splitting
+- **Accessibility**: ARIA compliant with screen reader support
+- **Inline SVG Rendering**: Icons rendered as inline SVG for easy styling
 
 ## Requirements
 
@@ -29,8 +21,8 @@ This module integrates the [Heroicons](https://heroicons.com/) library into Drup
 
 ## Installation
 
-1. Download and place the `heroicons` folder in the `web/modules/custom/` directory
-2. Navigate to Extend (`/admin/modules`) and enable the Heroicons module
+1. Download and place the `heroicons` folder in `web/modules/custom/`
+2. Navigate to **Extend** (`/admin/modules`) and enable the Heroicons module
 3. Clear caches: `drush cache:rebuild`
 
 ## Usage
@@ -47,25 +39,29 @@ This module integrates the [Heroicons](https://heroicons.com/) library into Drup
 2. **Search**: Type in the search box to filter icons by name
 3. **Browse**: Use ↑↓ arrow keys to navigate options
 4. **Select**: Click an icon or press Enter to choose
-5. **Style**: Choose from Outline, Solid, Mini, or Micro variants
+5. **Style**: Choose from Outline, Solid, Mini, or Micro variants using the horizontal button group
 
-### Field Configuration
+### Display
 
-- **Icon Name**: Automatically populated from user selection
-- **Icon Style**: 
-  - **Outline (24px)**: Outlined icons for general use
-  - **Solid (24px)**: Filled icons for emphasis
-  - **Mini (20px)**: Compact solid icons
-  - **Micro (16px)**: Smallest solid icons
+Icons are automatically rendered as inline SVG elements, making them easy to style with CSS:
+
+```css
+/* Style all heroicons */
+.heroicons-field svg {
+  width: 2rem;
+  height: 2rem;
+  color: #3b82f6; /* Blue color */
+}
+```
 
 ## Technical Details
 
 ### Architecture
-- **Frontend**: React + Catalyst UI components + Headless UI
-- **Performance**: ~70KB optimized UMD bundle (gzipped ~23KB)
-- **Compatibility**: Respects Drupal Form API, no Ajax required
-- **Fallback**: Hidden form inputs maintain compatibility
-- **Building**: Uses Vite for optimized builds
+- **Frontend**: React 18 + HeadlessUI + Catalyst UI patterns
+- **Build Tool**: Vite with optimized UMD output
+- **Bundle Size**: ~200KB total (~48KB gzipped)
+- **Compatibility**: Full Drupal Form API integration
+- **Progressive Enhancement**: Works without JavaScript (graceful degradation)
 
 ### Browser Support
 - Chrome/Edge 88+
@@ -77,25 +73,23 @@ This module integrates the [Heroicons](https://heroicons.com/) library into Drup
 ### File Structure
 ```
 heroicons/
-├─ css/
-│   ├─ heroicons-react-widget.css   # Catalyst-style component styling
-│   └─ heroicons-sprite.css        # SVG sprite utilities
 ├─ src/
 │   ├─ Plugin/Field/               # Drupal field plugins
-│   └─ react/                      # React components
-│       ├─ HeroiconsCombobox.jsx     # Main React component
-│       └─ index.jsx               # Entry point for React
-├─ dist/                          # Built JavaScript bundles (Vite output)
-├─ icons/                        # Icon SVG files
-├─ templates/                    # Twig templates
-├─ combobox.jsx                  # Catalyst UI Combobox component
-├─ package.json                  # NPM dependencies
-└─ vite.config.js                # Build configuration
+│   ├─ react/                      # React components
+│   │   ├─ HeroiconsCombobox.jsx   # Main React widget
+│   │   └─ index.jsx               # React initialization
+│   └─ styles.css                  # Tailwind source
+├─ dist/                          # Built assets (auto-generated)
+├─ icons/                         # Heroicon SVG files
+├─ templates/                     # Twig templates
+├─ css/                          # Legacy CSS (being phased out)
+├─ package.json                   # NPM dependencies
+└─ vite.config.js                 # Build configuration
 ```
 
 ### Building the React Component
 
-To modify the React component and rebuild:
+To modify the React component:
 
 ```bash
 cd web/modules/custom/heroicons
@@ -104,52 +98,49 @@ npm run build # Build the component
 ```
 
 ### Customization
-The widget can be styled by overriding CSS variables and classes:
+
+The widget uses TailwindCSS classes and can be customized by overriding styles:
 
 ```css
-/* Override main accent color */
-:root {
-  --catalyst-accent-color: #0891b2; /* Cyan 600 */
+/* Override accent colors */
+[data-heroicons-react-widget] {
+  --color-blue-500: #0891b2; /* Custom blue */
+}
+
+/* Style the dropdown */
+[data-heroicons-react-widget] .max-h-40 {
+  max-height: 200px; /* Taller dropdown */
 }
 ```
 
-Key CSS classes:
-- `.heroicons-react-widget` - Main container
-- `[data-slot=input]` - Search input
-- `[data-slot=options]` - Dropdown container
-- `.heroicons-option` - Individual options
-- `.heroicons-preview` - Icon previews
+Key elements:
+- `[data-heroicons-react-widget]` - Main container
+- `.component-label` - Field labels within the widget
+- `.grid-cols-2` - Icon/Style layout grid
+- `.max-h-40` - Dropdown height constraint
 
 ## Troubleshooting
 
 **Icons not showing?**
 - Clear Drupal caches: `drush cache:rebuild`
-- Verify React loads in browser dev tools
-- Check for JavaScript errors in console
+- Check browser console for JavaScript errors
+- Verify React dependencies load correctly
 
 **Search not working?**
 - Ensure JavaScript is enabled
-- Verify Alpine.js CDN accessibility
 - Check browser compatibility
+- Verify network connectivity for CDN resources
+
+**Field label missing?**
+- Check field configuration in Drupal admin
+- Clear caches after configuration changes
 
 ## Contributing
 
-Contributions welcome! Please submit issues and pull requests on [GitHub](https://github.com/sinyayadynya/heroicons).
-
-### Changelog
-
-**v1.3.0** (2024)
-- ✨ Added searchable combobox interface
-- ✨ Added visual icon previews  
-- ✨ Added keyboard navigation
-- ✨ Improved accessibility (ARIA support)
-- ✨ Added Alpine.js integration
-- 🎨 Modern, Catalyst-inspired design
-- ⚡ Performance optimizations with SVG sprites
-
-**v1.1.1** (Previous)
-- Basic dropdown selectors
-- Four icon style support
+Contributions welcome! Please ensure:
+- Follow Drupal coding standards
+- Test across supported browsers
+- Update documentation for new features
 
 ## License
 

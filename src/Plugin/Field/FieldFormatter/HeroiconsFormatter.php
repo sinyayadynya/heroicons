@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * @file
+ * Contains \Drupal\heroicons\Plugin\Field\FieldFormatter\HeroiconsFormatter.
+ */
+
+declare(strict_types=1);
+
 namespace Drupal\heroicons\Plugin\Field\FieldFormatter;
 
 use Drupal\Core\Field\FieldItemListInterface;

@@ -1,21 +1,12 @@
 @import "tailwindcss";
 
-/* Force light mode only - preserve all other Catalyst styles */
+/* Force light mode and ensure proper display */
 [data-heroicons-react-widget] {
   color-scheme: light !important;
-}
-
-/* Ensure dropdown doesn't get clipped by parent containers */
-[data-heroicons-react-widget] {
   overflow: visible !important;
 }
 
-/* Ensure field wrapper doesn't clip dropdown */
-.field--type-heroicons {
-  overflow: visible !important;
-}
-
-/* Ensure form wrapper doesn't clip dropdown */
+.field--type-heroicons,
 .field--type-heroicons .form-wrapper {
   overflow: visible !important;
 }

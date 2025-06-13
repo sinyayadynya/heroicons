@@ -3,7 +3,12 @@
 /**
  * @file
  * Heroicons module for Drupal.
+ * 
+ * Provides a field type for selecting and displaying Heroicons
+ * with a React-powered searchable interface.
  */
+
+declare(strict_types=1);
 
 use Drupal\Core\Routing\RouteMatchInterface;
 

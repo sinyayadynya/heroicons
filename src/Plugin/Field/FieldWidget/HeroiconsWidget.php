@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * @file
+ * Contains \Drupal\heroicons\Plugin\Field\FieldWidget\HeroiconsWidget.
+ */
+
+declare(strict_types=1);
+
 namespace Drupal\heroicons\Plugin\Field\FieldWidget;
 
 use Drupal\Core\Extension\ModuleHandlerInterface;

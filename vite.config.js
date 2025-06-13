@@ -7,7 +7,16 @@ export default defineConfig(async () => {
   const tailwindcss = await import('@tailwindcss/vite').then(m => m.default || m);
   
   return {
-    plugins: [react(), tailwindcss()],
+    plugins: [
+      react({
+        // Optimize React for production
+        babel: {
+          compact: true,
+          minified: true
+        }
+      }), 
+      tailwindcss()
+    ],
     define: {
       'process.env.NODE_ENV': JSON.stringify('production'),
       'process.env': JSON.stringify({}),
@@ -16,6 +25,14 @@ export default defineConfig(async () => {
     },
     build: {
       outDir: 'dist',
+      minify: 'terser',
+      terserOptions: {
+        compress: {
+          drop_console: true,
+          drop_debugger: true,
+          pure_funcs: ['console.log', 'console.info', 'console.debug', 'console.warn']
+        }
+      },
       lib: {
         entry: path.resolve(__dirname, 'src/react/index.jsx'),
         name: 'HeroiconsWidget',
@@ -23,7 +40,7 @@ export default defineConfig(async () => {
         formats: ['umd', 'es']
       },
       rollupOptions: {
-        // Make sure to externalize React so it's not included in the bundle
+        // Externalize React dependencies only
         external: ['react', 'react-dom'],
         output: {
           globals: {
@@ -31,6 +48,11 @@ export default defineConfig(async () => {
             'react-dom': 'ReactDOM'
           }
         }
+      },
+      // Enable tree shaking
+      treeshake: {
+        preset: 'recommended',
+        moduleSideEffects: false
       }
     }
   }

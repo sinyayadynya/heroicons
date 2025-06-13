@@ -1,5 +1,12 @@
 <?php
 
+/**
+ * @file
+ * Contains \Drupal\heroicons\Plugin\Field\FieldType\HeroiconsField.
+ */
+
+declare(strict_types=1);
+
 namespace Drupal\heroicons\Plugin\Field\FieldType;
 
 use Drupal\Core\Field\FieldItemBase;
@@ -59,8 +66,17 @@ class HeroiconsField extends FieldItemBase {
 
   /**
    * {@inheritdoc}
+   * 
+   * Determines if the field item is empty.
+   * 
+   * A Heroicons field is considered empty if no icon name is selected.
+   * The style can have a default value, so it's not required for the field
+   * to be considered non-empty.
+   * 
+   * @return bool
+   *   TRUE if the field is empty, FALSE otherwise.
    */
-  public function isEmpty() {
+  public function isEmpty(): bool {
     $icon_name = $this->get('icon_name')->getValue();
     $icon_style = $this->get('icon_style')->getValue();
     

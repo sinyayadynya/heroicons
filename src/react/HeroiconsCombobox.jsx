@@ -1,18 +1,27 @@
 import React, { useState, useEffect, useCallback, useMemo } from 'react';
-import { Combobox, Transition, Listbox } from '@headlessui/react';
+import { Combobox, Transition } from '@headlessui/react';
 import { ChevronUpDownIcon, CheckIcon } from '@heroicons/react/20/solid';
-import { 
-  RectangleStackIcon, 
-  Square3Stack3DIcon, 
-  Squares2X2Icon, 
-  Square2StackIcon 
-} from '@heroicons/react/16/solid';
 
 /**
  * Heroicon preview component following Catalyst pattern
  */
 function IconPreview({ name, style }) {
   const [IconComponent, setIconComponent] = useState(null);
+  
+  // Get size class based on style - maintaining visual hierarchy
+  const getSizeClass = (iconStyle) => {
+    switch (iconStyle) {
+      case 'solid':
+      case 'outline':
+        return 'h-6 w-6'; // 24px
+      case 'mini':
+        return 'h-5 w-5'; // 20px  
+      case 'micro':
+        return 'h-4 w-4'; // 16px
+      default:
+        return 'h-6 w-6'; // 24px fallback
+    }
+  };
   
   useEffect(() => {
     const loadIcon = async () => {
@@ -52,8 +61,12 @@ function IconPreview({ name, style }) {
     loadIcon();
   }, [name, style]);
   
-  // Return the icon component directly, following Catalyst pattern
-  return IconComponent ? <IconComponent data-slot="icon" className="h-5 w-5" /> : null;
+  // Return the icon component with appropriate size, wrapped in a consistent container
+  return IconComponent ? (
+    <div className="flex items-center justify-center h-6 w-6">
+      <IconComponent data-slot="icon" className={getSizeClass(style)} />
+    </div>
+  ) : null;
 }
 
 /**
@@ -136,23 +149,19 @@ function HeroiconsCombobox({ settings, container }) {
     updateFormInputs(currentValue, newStyle);
   }, [currentValue, updateFormInputs]);
 
-  // Handle query change with useCallback for performance
-  const handleQueryChange = useCallback((event) => {
-    setQuery(event.target.value);
-  }, []);
+  // Handle query change
+  const handleQueryChange = useCallback(e => setQuery(e.target.value), []);
 
   // Find selected option
   const selectedOption = options.find(o => o.name === currentValue) || null;
 
   const [query, setQuery] = useState('');
 
-  // Memoize filtered options for performance
-  const filteredOptions = useMemo(() => {
-    if (query === '') return options;
-    return options.filter((option) =>
+  // Filtered options
+  const filteredOptions = useMemo(() => 
+    query === '' ? options : options.filter(option =>
       option.name.toLowerCase().includes(query.toLowerCase())
-    );
-  }, [options, query]);
+    ), [options, query]);
 
   return (
     <div className="space-y-4">

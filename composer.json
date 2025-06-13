@@ -1,12 +1,34 @@
 {
 	"name": "drupal/heroicons",
 	"type": "drupal-module",
-	"description": "A custom Drupal 10 module that provides a new field type for integrating Heroicons",
-	"keywords": [],
-	"homepage": "https://github.com/sinyayadynya/heroicons",
-	"minimum-stability": "dev",
+	"description": "A modern field type for selecting and displaying Heroicons with a React-powered searchable interface",
+	"keywords": ["drupal", "field", "icons", "heroicons", "react", "svg"],
+	"homepage": "https://www.drupal.org/project/heroicons",
+	"license": "GPL-2.0-or-later",
+	"authors": [
+		{
+			"name": "See contributors on GitHub",
+			"homepage": "https://github.com/sinyayadynya/heroicons/graphs/contributors"
+		}
+	],
+	"support": {
+		"issues": "https://www.drupal.org/project/issues/heroicons",
+		"source": "https://git.drupalcode.org/project/heroicons"
+	},
+	"minimum-stability": "stable",
 	"require": {
+		"php": ">=8.1",
+		"drupal/core": "^10 || ^11",
 		"ext-dom": "*",
 		"ext-libxml": "*"
+	},
+	"require-dev": {
+		"drupal/core-dev": "^10 || ^11"
+	},
+	"extra": {
+		"drupal": {
+			"version": "2.0.0",
+			"datestamp": "1734127800"
+		}
 	}
 }

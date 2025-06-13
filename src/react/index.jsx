@@ -22,10 +22,7 @@ import HeroiconsCombobox from './HeroiconsCombobox';
           const fieldName = container.dataset.fieldName;
           const delta = parseInt(container.dataset.delta, 10);
           
-          if (!settings.heroicons || !settings.heroicons[fieldName] || !settings.heroicons[fieldName][delta]) {
-            console.error(`Heroicons: Missing settings for ${fieldName}[${delta}]`);
-            return;
-          }
+          if (!settings.heroicons?.[fieldName]?.[delta]) return;
           
           const widgetSettings = settings.heroicons[fieldName][delta];
           
@@ -36,9 +33,24 @@ import HeroiconsCombobox from './HeroiconsCombobox';
             
             // Mark as initialized to prevent duplicate initialization
             container.setAttribute('data-react-initialized', 'true');
-            console.log(`Heroicons: React widget initialized for ${fieldName}[${delta}]`);
+            // Widget initialized successfully
           } catch (error) {
             console.error('Heroicons: Failed to initialize React widget', error);
+            
+            // Fallback: show error message
+            container.innerHTML = `
+              <div class="heroicons-fallback" style="padding: 1rem; border: 1px solid #d1d5db; border-radius: 0.375rem; background-color: #f9fafb;">
+                <strong>Icon Selector Unavailable</strong>
+                <p>The interactive icon selector failed to load. Please refresh the page or contact your administrator.</p>
+                <details style="margin-top: 0.5rem;">
+                  <summary>Technical Details</summary>
+                  <pre style="font-size: 0.75rem; margin-top: 0.5rem; color: #374151;">${error.toString()}</pre>
+                </details>
+              </div>
+            `;
+            
+            // Mark as failed to prevent retry loops
+            container.setAttribute('data-react-failed', 'true');
           }
         });
       }

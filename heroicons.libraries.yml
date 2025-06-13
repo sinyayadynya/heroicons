@@ -30,29 +30,15 @@ clsx:
   js:
     https://unpkg.com/clsx@2.0.0/dist/clsx.min.js: { type: external, minified: true, weight: -18 }
 
-headlessui_react:
-  remote: https://unpkg.com/@headlessui/react@1.7.18/dist/headlessui.production.min.js
-  version: 1.7.18
-  license:
-    name: MIT
-    url: https://github.com/tailwindlabs/headlessui/blob/main/LICENSE
-    gpl-compatible: true
-  js:
-    https://unpkg.com/@headlessui/react@1.7.18/dist/headlessui.production.min.js: { type: external, minified: true, weight: -17 }
-  dependencies:
-    - heroicons/react
-
 react_widget:
   css:
     theme:
       dist/style.css: {}
   js:
-    dist/widget.umd.js: { weight: -15 }
+    dist/widget.umd.js: { weight: -15, minified: true }
   dependencies:
     - core/drupal
     - core/drupalSettings
     - heroicons/react
     - heroicons/react_dom
-    - heroicons/clsx
-    - heroicons/headlessui_react
 
