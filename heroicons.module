@@ -21,43 +21,8 @@ function heroicons_help($route_name, RouteMatchInterface $route_match) {
  * Implements hook_page_attachments().
  */
 function heroicons_page_attachments(array &$attachments) {
-  // Get current route
-  $route_match = \Drupal::routeMatch();
-  $route_name = $route_match->getRouteName();
-  
-  // Attach sprite library to admin forms and entity edit forms
-  $admin_routes = [
-    'entity.node.edit_form',
-    'entity.node.add_form',
-    'entity.taxonomy_term.edit_form',
-    'entity.taxonomy_term.add_form',
-    'entity.user.edit_form',
-    'entity.block_content.edit_form',
-    'entity.block_content.add_form',
-    'entity.media.edit_form',
-    'entity.media.add_form',
-  ];
-  
-  // Also attach on admin pages that might contain field configuration
-  if (in_array($route_name, $admin_routes) || 
-      strpos($route_name, '.admin_') !== FALSE ||
-      strpos($route_name, 'field_ui.') !== FALSE) {
-    
-    $attachments['#attached']['library'][] = 'heroicons/sprite';
-    
-    // Add the sprite template
-    // Temporarily disabled to debug HtmlTag error
-    /*
-    $sprite_icons = heroicons_get_all_icon_names();
-    $attachments['#attached']['html_head'][] = [
-      [
-        '#theme' => 'heroicons_sprite',
-        '#sprite_icons' => $sprite_icons,
-      ],
-      'heroicons_sprite'
-    ];
-    */
-  }
+  // Sprite functionality is disabled for the React-based implementation
+  // Icons are loaded dynamically by the React component instead
 }
 
 /**
@@ -65,11 +30,11 @@ function heroicons_page_attachments(array &$attachments) {
  */
 function heroicons_theme($existing, $type, $theme, $path) {
   return [
-    'heroicons_sprite' => [
+    'heroicons_field' => [
       'variables' => [
-        'sprite_icons' => [],
+        'icons' => [],
       ],
-      'template' => 'heroicons-sprite',
+      'template' => 'heroicons-field',
     ],
   ];
 }

@@ -115,6 +115,10 @@ class HeroiconsWidget extends WidgetBase implements ContainerFactoryPluginInterf
         'id' => $html_id,
       ],
     ];
+
+    // Ensure proper Drupal field structure for label display
+    $element['#type'] = 'fieldset';
+    $element['#tree'] = TRUE;
     
     // Add debug notice during development
     if (\Drupal::state()->get('heroicons_debug', FALSE)) {
@@ -226,61 +230,5 @@ class HeroiconsWidget extends WidgetBase implements ContainerFactoryPluginInterf
     return $allIcons;
   }
 
-  /**
-   * Build the HTML template for virtual scrolling options list.
-   */
-  protected function buildVirtualOptionsTemplate() {
-    return '
-      <template x-for="(icon, index) in $virtual.items" :key="icon.name">
-        <li
-          class="heroicons-combobox__option"
-          :class="{ \'heroicons-combobox__option--active\': getVirtualIndex(icon) === activeIndex }"
-          :data-index="getVirtualIndex(icon)"
-          :id="`option-${getVirtualIndex(icon)}`"
-          @click="choose(icon)"
-          role="option"
-          :aria-selected="selected === icon.name"
-          style="height: 40px; display: flex; align-items: center;"
-        >
-          <div
-            class="heroicons-combobox__icon"
-            style="width: 16px; height: 16px; background-color: currentColor; opacity: 0.3; border-radius: 2px;"
-            aria-hidden="true"
-          ></div>
-          <span class="heroicons-combobox__option-text" x-text="icon.name"></span>
-        </li>
-      </template>
-    ';
-  }
-
-  /**
-   * Build the HTML template for the options list (legacy fallback).
-   */
-  protected function buildOptionsTemplate() {
-    return '
-      <template x-for="(icon, index) in filtered" :key="icon.name">
-        <li
-          class="heroicons-combobox__option"
-          :class="{ \'heroicons-combobox__option--active\': index === activeIndex }"
-          :data-index="index"
-          :id="`option-${index}`"
-          @click="choose(icon)"
-          role="option"
-          :aria-selected="selected === icon.name"
-        >
-          <svg
-            class="heroicons-combobox__icon"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="currentColor"
-            viewBox="0 0 24 24"
-            aria-hidden="true"
-          >
-            <use :href="getIconSvgPath(icon.name)" />
-          </svg>
-          <span class="heroicons-combobox__option-text" x-text="icon.name"></span>
-        </li>
-      </template>
-    ';
-  }
 
 }

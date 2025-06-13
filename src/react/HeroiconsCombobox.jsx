@@ -156,214 +156,119 @@ function HeroiconsCombobox({ settings, container }) {
 
   return (
     <div className="space-y-4">
-      {/* Icon combobox using proper HeadlessUI */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Icon
-        </label>
-        
-        <Combobox value={selectedOption} onChange={handleSelect}>
-          <div className="relative mt-1">
-            <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm">
-              <Combobox.Input
-                className="w-full border-none py-2 pl-10 pr-10 text-sm leading-5 text-gray-900 focus:ring-0"
-                displayValue={(option) => {
-                  // If we have a selected option, show its name
-                  if (option?.name) return option.name;
-                  // If we have a currentValue but no option yet (still loading), show the value
-                  if (currentValue && !selectedOption) return currentValue;
-                  // Otherwise return empty string
-                  return '';
-                }}
-                onChange={handleQueryChange}
-                placeholder="Search icons..."
-              />
-              
-              {/* Selected icon inside the input */}
-              {(currentValue && !query) && (
-                <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                  <IconPreview name={currentValue} style={currentStyle} />
-                </div>
-              )}
-              
-              <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
-                <ChevronUpDownIcon
-                  className="h-5 w-5 text-gray-400"
-                  aria-hidden="true"
+      {/* Horizontal layout for icon and style selectors */}
+      <div className="grid grid-cols-2 gap-4">
+        {/* Icon combobox */}
+        <div>
+          <label className="component-label">
+            Icon
+          </label>
+          
+          <Combobox value={selectedOption} onChange={handleSelect}>
+            <div className="relative" style={{ zIndex: 1000 }}>
+              <div className="relative w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-blue-300 sm:text-sm">
+                <Combobox.Input
+                  className="w-full border-none py-2 pl-10 pr-10 text-sm leading-5 text-gray-900 focus:ring-0"
+                  displayValue={(option) => {
+                    // If we have a selected option, show its name
+                    if (option?.name) return option.name;
+                    // If we have a currentValue but no option yet (still loading), show the value
+                    if (currentValue && !selectedOption) return currentValue;
+                    // Otherwise return empty string
+                    return '';
+                  }}
+                  onChange={handleQueryChange}
+                  placeholder="Search icons..."
                 />
-              </Combobox.Button>
+                
+                {/* Selected icon inside the input */}
+                {(currentValue && !query) && (
+                  <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <IconPreview name={currentValue} style={currentStyle} />
+                  </div>
+                )}
+                
+                <Combobox.Button className="absolute inset-y-0 right-0 flex items-center pr-2">
+                  <ChevronUpDownIcon
+                    className="h-5 w-5 text-gray-400"
+                    aria-hidden="true"
+                  />
+                </Combobox.Button>
+              </div>
+              <Transition
+                leave="transition ease-in duration-100"
+                leaveFrom="opacity-100"
+                leaveTo="opacity-0"
+              >
+                <Combobox.Options className="absolute mt-1 max-h-40 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm z-50">
+                  {filteredOptions.length === 0 && query !== '' ? (
+                    <div className="relative cursor-default select-none px-4 py-2 text-gray-700">
+                      Nothing found.
+                    </div>
+                  ) : (
+                    filteredOptions.map((option) => (
+                      <Combobox.Option
+                        key={option.id}
+                        className={({ active }) =>
+                          `relative cursor-default select-none py-2 pl-3 pr-4 ${
+                            active ? 'bg-blue-500 text-white' : 'text-gray-900'
+                          }`
+                        }
+                        value={option}
+                      >
+                        {({ selected, active }) => (
+                          <div className="flex items-center gap-3">
+                            <IconPreview name={option.name} style={currentStyle} />
+                            <span
+                              className={`block truncate ${
+                                selected ? 'font-medium' : 'font-normal'
+                              }`}
+                            >
+                              {option.name}
+                            </span>
+                            {selected && (
+                              <CheckIcon className="ml-auto h-4 w-4" aria-hidden="true" />
+                            )}
+                          </div>
+                        )}
+                      </Combobox.Option>
+                    ))
+                  )}
+                </Combobox.Options>
+              </Transition>
             </div>
-            <Transition
-              leave="transition ease-in duration-100"
-              leaveFrom="opacity-100"
-              leaveTo="opacity-0"
-            >
-              <Combobox.Options className="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm z-10">
-                {filteredOptions.length === 0 && query !== '' ? (
-                  <div className="relative cursor-default select-none px-4 py-2 text-gray-700">
-                    Nothing found.
-                  </div>
-                ) : (
-                  filteredOptions.map((option) => (
-                    <Combobox.Option
-                      key={option.id}
-                      className={({ active }) =>
-                        `relative cursor-default select-none py-2 pl-3 pr-4 ${
-                          active ? 'bg-teal-600 text-white' : 'text-gray-900'
-                        }`
-                      }
-                      value={option}
-                    >
-                      {({ selected, active }) => (
-                        <div className="flex items-center gap-3">
-                          <IconPreview name={option.name} style={currentStyle} />
-                          <span
-                            className={`block truncate ${
-                              selected ? 'font-medium' : 'font-normal'
-                            }`}
-                          >
-                            {option.name}
-                          </span>
-                          {selected && (
-                            <CheckIcon className="ml-auto h-4 w-4" aria-hidden="true" />
-                          )}
-                        </div>
-                      )}
-                    </Combobox.Option>
-                  ))
-                )}
-              </Combobox.Options>
-            </Transition>
-          </div>
-        </Combobox>
-      </div>
+          </Combobox>
+        </div>
 
-      {/* Style selector using Catalyst Listbox */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
-          Style
-        </label>
-        <Listbox value={currentStyle} onChange={handleStyleChange}>
-          <div className="relative mt-1">
-          <Listbox.Button className="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 text-sm">
-            <span className="flex items-center">
-              {currentStyle === 'outline' && <RectangleStackIcon data-slot="icon" className="h-4 w-4 mr-2" />}
-              {currentStyle === 'solid' && <Square3Stack3DIcon data-slot="icon" className="h-4 w-4 mr-2" />}
-              {currentStyle === 'mini' && <Squares2X2Icon data-slot="icon" className="h-4 w-4 mr-2" />}
-              {currentStyle === 'micro' && <Square2StackIcon data-slot="icon" className="h-4 w-4 mr-2" />}
-              <span className="block truncate text-sm">
-                {currentStyle === 'outline' && 'Outline (24px)'}
-                {currentStyle === 'solid' && 'Solid (24px)'}
-                {currentStyle === 'mini' && 'Mini (20px)'}
-                {currentStyle === 'micro' && 'Micro (16px)'}
-              </span>
-            </span>
-            <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
-              <ChevronUpDownIcon className="h-5 w-5 text-gray-400" aria-hidden="true" />
-            </span>
-          </Listbox.Button>
-          <Transition
-            leave="transition ease-in duration-100"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <Listbox.Options className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-sm shadow-lg ring-1 ring-black/5 focus:outline-none">
-              <Listbox.Option
-                value="outline"
-                className={({ active }) =>
-                  `relative cursor-default select-none py-2 pl-3 pr-4 ${
-                    active ? 'bg-teal-600 text-white' : 'text-gray-900'
-                  }`
-                }
+        {/* Horizontal style selector */}
+        <div>
+          <label className="component-label">
+            Style
+          </label>
+          <div className="flex rounded-lg border border-gray-300 bg-white overflow-hidden shadow-md">
+            {[
+              { value: 'outline', label: 'Outline' },
+              { value: 'solid', label: 'Solid' },
+              { value: 'mini', label: 'Mini' },
+              { value: 'micro', label: 'Micro' }
+            ].map((styleOption, index) => (
+              <button
+                key={styleOption.value}
+                type="button"
+                onClick={() => handleStyleChange(styleOption.value)}
+                className={`flex-1 px-3 py-2 text-sm font-medium transition-colors ${
+                  currentStyle === styleOption.value
+                    ? 'bg-blue-50 text-blue-700 border-blue-200'
+                    : 'text-gray-700 hover:bg-gray-50'
+                } ${
+                  index > 0 ? 'border-l border-gray-300' : ''
+                }`}
               >
-                {({ selected, active }) => (
-                  <div className="flex items-center">
-                    <RectangleStackIcon 
-                      data-slot="icon" 
-                      className={`h-4 w-4 mr-2 ${active ? 'text-white' : 'text-gray-500'}`} 
-                    />
-                    <span className={`block truncate text-sm ${selected ? 'font-medium' : 'font-normal'}`}>
-                      Outline (24px)
-                    </span>
-                    {selected && (
-                      <CheckIcon className="ml-auto h-4 w-4" aria-hidden="true" />
-                    )}
-                  </div>
-                )}
-              </Listbox.Option>
-              <Listbox.Option
-                value="solid"
-                className={({ active }) =>
-                  `relative cursor-default select-none py-2 pl-3 pr-4 ${
-                    active ? 'bg-teal-600 text-white' : 'text-gray-900'
-                  }`
-                }
-              >
-                {({ selected, active }) => (
-                  <div className="flex items-center">
-                    <Square3Stack3DIcon 
-                      data-slot="icon" 
-                      className={`h-4 w-4 mr-2 ${active ? 'text-white' : 'text-gray-500'}`} 
-                    />
-                    <span className={`block truncate text-sm ${selected ? 'font-medium' : 'font-normal'}`}>
-                      Solid (24px)
-                    </span>
-                    {selected && (
-                      <CheckIcon className="ml-auto h-4 w-4" aria-hidden="true" />
-                    )}
-                  </div>
-                )}
-              </Listbox.Option>
-              <Listbox.Option
-                value="mini"
-                className={({ active }) =>
-                  `relative cursor-default select-none py-2 pl-3 pr-4 ${
-                    active ? 'bg-teal-600 text-white' : 'text-gray-900'
-                  }`
-                }
-              >
-                {({ selected, active }) => (
-                  <div className="flex items-center">
-                    <Squares2X2Icon 
-                      data-slot="icon" 
-                      className={`h-4 w-4 mr-2 ${active ? 'text-white' : 'text-gray-500'}`} 
-                    />
-                    <span className={`block truncate text-sm ${selected ? 'font-medium' : 'font-normal'}`}>
-                      Mini (20px)
-                    </span>
-                    {selected && (
-                      <CheckIcon className="ml-auto h-4 w-4" aria-hidden="true" />
-                    )}
-                  </div>
-                )}
-              </Listbox.Option>
-              <Listbox.Option
-                value="micro"
-                className={({ active }) =>
-                  `relative cursor-default select-none py-2 pl-3 pr-4 ${
-                    active ? 'bg-teal-600 text-white' : 'text-gray-900'
-                  }`
-                }
-              >
-                {({ selected, active }) => (
-                  <div className="flex items-center">
-                    <Square2StackIcon 
-                      data-slot="icon" 
-                      className={`h-4 w-4 mr-2 ${active ? 'text-white' : 'text-gray-500'}`} 
-                    />
-                    <span className={`block truncate text-sm ${selected ? 'font-medium' : 'font-normal'}`}>
-                      Micro (16px)
-                    </span>
-                    {selected && (
-                      <CheckIcon className="ml-auto h-4 w-4" aria-hidden="true" />
-                    )}
-                  </div>
-                )}
-              </Listbox.Option>
-            </Listbox.Options>
-          </Transition>
+                {styleOption.label}
+              </button>
+            ))}
           </div>
-        </Listbox>
+        </div>
       </div>
     </div>
   );

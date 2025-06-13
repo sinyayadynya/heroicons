@@ -56,9 +56,3 @@ react_widget:
     - heroicons/clsx
     - heroicons/headlessui_react
 
-sprite:
-  css:
-    theme:
-      css/heroicons-sprite.css: {}
-  dependencies:
-    - core/drupal
