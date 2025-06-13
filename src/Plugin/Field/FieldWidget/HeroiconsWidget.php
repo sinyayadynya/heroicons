@@ -76,121 +76,81 @@ class HeroiconsWidget extends WidgetBase implements ContainerFactoryPluginInterf
     $field_name = $this->fieldDefinition->getName();
     $html_id = Html::getUniqueId("heroicons-{$field_name}-{$delta}");
 
-    // Attach libraries and settings
-    $element['#attached']['library'][] = 'heroicons/combobox';
+    // Attach libraries and settings for React
+    $element['#attached']['library'][] = 'heroicons/react_widget';
     $element['#attached']['drupalSettings']['heroicons'][$field_name][$delta] = [
       'allIcons' => $allIcons,
       'value' => $value,
       'style' => $style,
     ];
 
-    // Main container with Alpine.js data
-    $element += [
-      '#type' => 'container',
-      '#attributes' => [
-        'class' => ['heroicons-combobox'],
-        'x-data' => "heroiconsCombobox(drupalSettings.heroicons['{$field_name}'][{$delta}])",
-        'id' => $html_id,
-        'x-init' => 'init()',
-      ],
-    ];
-
-    // Search input field
-    $element['search'] = [
-      '#type' => 'textfield',
-      '#title' => $this->t('Search icons'),
-      '#attributes' => [
-        'class' => ['heroicons-combobox__input'],
-        'x-ref' => 'searchInput',
-        'x-model' => 'query',
-        ':value' => 'displayValue',
-        '@focus' => 'handleInputFocus()',
-        '@blur' => 'handleInputBlur()',
-        '@keydown' => 'handleKeydown($event)',
-        'placeholder' => $this->t('Search for an icon...'),
-        'autocomplete' => 'off',
-        'role' => 'combobox',
-        'aria-expanded' => 'false',
-        ':aria-expanded' => 'open',
-        'aria-haspopup' => 'listbox',
-        ':aria-activedescendant' => 'activeIndex >= 0 ? `option-${activeIndex}` : null',
-      ],
-    ];
-
-    // Hidden input for actual field value
+    // Hidden input for icon name - OUTSIDE React container so it doesn't get replaced
     $element['icon_name'] = [
       '#type' => 'hidden',
       '#default_value' => $value,
       '#attributes' => [
-        'x-ref' => 'inputIcon',
+        'data-heroicons-icon-name' => TRUE,
+        'class' => ['heroicons-icon-name-input'],
       ],
     ];
-
-    // Style selector
+    
+    // Hidden input for icon style - OUTSIDE React container so it doesn't get replaced
     $element['icon_style'] = [
-      '#type' => 'select',
-      '#title' => $this->t('Style'),
+      '#type' => 'hidden',
       '#default_value' => $style,
-      '#options' => [
-        'outline' => $this->t('Outline (24px)'),
-        'solid' => $this->t('Solid (24px)'),
-        'mini' => $this->t('Mini (20px)'),
-        'micro' => $this->t('Micro (16px)'),
-      ],
       '#attributes' => [
-        'class' => ['heroicons-combobox__style-select'],
-        'x-ref' => 'styleSelect',
-        '@change' => 'handleStyleChange()',
+        'data-heroicons-icon-style' => TRUE,
+        'class' => ['heroicons-icon-style-input'],
       ],
     ];
-
-    // Dropdown container
-    $element['dropdown'] = [
+    
+    // React widget container - React will render inside this
+    $element['react_container'] = [
       '#type' => 'container',
       '#attributes' => [
-        'class' => ['heroicons-combobox__dropdown'],
-        'x-show' => 'open',
-        'x-transition' => 'true',
-        '@click.outside' => 'closeCombobox()',
+        'class' => ['heroicons-react-widget'],
+        'data-heroicons-react-widget' => 'true',
+        'data-field-name' => $field_name,
+        'data-delta' => $delta,
+        'id' => $html_id,
       ],
     ];
-
-    // Options list with virtual scrolling
-    $element['dropdown']['options'] = [
-      '#type' => 'html_tag',
-      '#tag' => 'ul',
-      '#attributes' => [
-        'class' => ['heroicons-combobox__options'],
-        'x-ref' => 'optionsList',
-        'x-virtual' => 'true',
-        'x-virtual:item-height' => '40',
-        'x-virtual:items' => 'filtered',
-        'x-virtual:buffer' => '8',
-        'role' => 'listbox',
-        'aria-label' => $this->t('Available icons'),
-        'style' => 'max-height: 240px; overflow-y: auto;',
-      ],
-      // Use #markup instead of #value to avoid HtmlTag rendering errors when
-      // Drupal expects a string value. buildVirtualOptionsTemplate() returns a
-      // HTML string used for the virtual scrolling template.
-      '#markup' => $this->buildVirtualOptionsTemplate(),
-    ];
-
-    // No results message
-    $element['dropdown']['no_results'] = [
-      '#type' => 'html_tag',
-      '#tag' => 'div',
-      '#attributes' => [
-        'class' => ['heroicons-combobox__no-results'],
-        'x-show' => 'filtered.length === 0 && query.length > 0',
-        'style' => 'padding: 12px; text-align: center; color: #6b7280; font-size: 14px;',
-      ],
-      // Ensure the rendered content is a string via #markup to satisfy the
-      // HtmlTag renderer introduced in newer Drupal versions.
-      '#markup' => $this->t('No icons found'),
-    ];
+    
+    // Add debug notice during development
+    if (\Drupal::state()->get('heroicons_debug', FALSE)) {
+      $element['debug'] = [
+        '#type' => 'markup',
+        '#markup' => $this->t('<div class="heroicons-debug">React widget loading... Value: @value, Style: @style</div>', [
+          '@value' => $value ?: 'none',
+          '@style' => $style,
+        ]),
+      ];
+    }
 
     return $element;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public function massageFormValues(array $values, array $form, FormStateInterface $form_state) {
+    $new_values = [];
+    
+    foreach ($values as $delta => $value) {
+      $icon_name = isset($value['icon_name']) ? trim($value['icon_name']) : '';
+      $icon_style = isset($value['icon_style']) ? $value['icon_style'] : 'outline';
+      
+      // Only save values if an icon is selected
+      if (!empty($icon_name)) {
+        $new_values[$delta]['icon_name'] = $icon_name;
+        $new_values[$delta]['icon_style'] = $icon_style;
+      } else {
+        // If no icon is selected, don't save anything (field is empty)
+        $new_values[$delta] = [];
+      }
+    }
+    
+    return $new_values;
   }
 
   /**
@@ -282,15 +242,11 @@ class HeroiconsWidget extends WidgetBase implements ContainerFactoryPluginInterf
           :aria-selected="selected === icon.name"
           style="height: 40px; display: flex; align-items: center;"
         >
-          <svg
+          <div
             class="heroicons-combobox__icon"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="currentColor"
-            viewBox="0 0 24 24"
+            style="width: 16px; height: 16px; background-color: currentColor; opacity: 0.3; border-radius: 2px;"
             aria-hidden="true"
-          >
-            <use :href="getIconSvgPath(icon.name)" />
-          </svg>
+          ></div>
           <span class="heroicons-combobox__option-text" x-text="icon.name"></span>
         </li>
       </template>

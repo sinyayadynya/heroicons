@@ -1,0 +1,309 @@
+/**
+ * Styles for the React-based Heroicons field widget.
+ * Based on Catalyst design system patterns.
+ */
+
+:root {
+  --catalyst-accent-color: #2563eb; /* Blue 600 */
+  --catalyst-text-color: #1f2937; /* Gray 800 */
+  --catalyst-border-color: #d1d5db; /* Gray 300 */
+  --catalyst-hover-bg: #f3f4f6; /* Gray 100 */
+  --catalyst-active-bg: #e5e7eb; /* Gray 200 */
+  --catalyst-focus-ring: 0 0 0 2px rgba(37, 99, 235, 0.5); /* Blue focus ring */
+  --catalyst-border-radius: 0.5rem; /* 8px */
+  --catalyst-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+  --catalyst-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Widget container */
+.heroicons-react-widget {
+  max-width: 600px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  color: var(--catalyst-text-color);
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+/* Main component layout */
+.heroicons-combobox-react {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 0;
+}
+
+/* Current selection display */
+.heroicons-combobox-react__current {
+  padding: 1rem;
+  background-color: #f8fafc;
+  border-radius: var(--catalyst-border-radius);
+  border: 1px solid var(--catalyst-border-color);
+  margin-bottom: 1rem;
+  box-shadow: var(--catalyst-shadow);
+}
+
+.heroicons-combobox-react__current-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6b7280;
+  margin: 0 0 0.5rem 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.heroicons-combobox-react__current-preview {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.heroicons-combobox-react__current-name {
+  font-size: 0.875rem;
+  color: var(--catalyst-text-color);
+  font-weight: 500;
+}
+
+/* Field containers */
+.heroicons-field {
+  margin-bottom: 1rem;
+}
+
+.heroicons-field:last-child {
+  margin-bottom: 0;
+}
+
+/* Catalyst-like form select */
+.heroicons-combobox-react .form-select {
+  display: block;
+  width: 100%;
+  border-radius: var(--catalyst-border-radius);
+  border: 1px solid var(--catalyst-border-color);
+  padding: 0.625rem 2.5rem 0.625rem 0.75rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  background-color: #fff;
+  color: var(--catalyst-text-color);
+  appearance: none;
+  box-shadow: var(--catalyst-shadow);
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%236B7280'%3E%3Cpath fill-rule='evenodd' d='M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z' clip-rule='evenodd' /%3E%3C/svg%3E");
+  background-position: right 0.75rem center;
+  background-repeat: no-repeat;
+  background-size: 1rem;
+}
+
+.heroicons-combobox-react .form-select:focus {
+  outline: none;
+  border-color: var(--catalyst-accent-color);
+  box-shadow: var(--catalyst-focus-ring);
+}
+
+.heroicons-combobox-react .form-select:hover {
+  border-color: #9ca3af;
+}
+
+/* Form label */
+.form-item__label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: 0.5rem;
+  line-height: 1.25;
+}
+
+/* Position context for dropdown */
+.heroicons-field:has([data-slot="control"]) {
+  position: relative;
+}
+
+/* Headless UI Combobox custom styles */
+.heroicons-combobox-react [data-slot=control] {
+  position: relative;
+  width: 100%;
+  display: block;
+}
+
+.heroicons-combobox-react [data-slot=control]::before {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  border-radius: calc(var(--catalyst-border-radius) - 1px);
+  background-color: #fff;
+  box-shadow: var(--catalyst-shadow);
+  z-index: 0;
+}
+
+/* Input field */
+.heroicons-combobox-react [data-slot=input] {
+  position: relative;
+  width: 100%;
+  padding: 0.625rem 2.5rem 0.625rem 0.75rem;
+  border-radius: var(--catalyst-border-radius);
+  border: 1px solid var(--catalyst-border-color);
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--catalyst-text-color);
+  background-color: transparent;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  z-index: 1;
+}
+
+.heroicons-combobox-react [data-slot=input]:focus {
+  outline: none;
+  box-shadow: var(--catalyst-focus-ring);
+  border-color: var(--catalyst-accent-color);
+}
+
+.heroicons-combobox-react [data-slot=input]:hover {
+  border-color: #9ca3af;
+}
+
+.heroicons-combobox-react [data-slot=input]::placeholder {
+  color: #6b7280;
+}
+
+/* Dropdown styling */
+.heroicons-combobox-react [data-slot=options] {
+  position: absolute;
+  left: 0;
+  right: 0;
+  max-height: 300px;
+  overflow-y: auto;
+  margin-top: 0.5rem;
+  border-radius: 0.75rem;
+  background-color: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: var(--catalyst-shadow-lg);
+  z-index: 50;
+  padding: 0.25rem;
+  min-width: calc(100% + 0.5rem);
+  scroll-padding: 0.25rem;
+}
+
+/* Combobox button (dropdown arrow) */
+.heroicons-combobox-react .group {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 0.5rem;
+  z-index: 2;
+}
+
+.heroicons-combobox-react .group svg {
+  width: 1.25rem;
+  height: 1.25rem;
+  stroke: #6b7280;
+  transition: stroke 0.15s ease-in-out;
+}
+
+.heroicons-combobox-react .group:hover svg {
+  stroke: #374151;
+}
+
+/* Option styling */
+.heroicons-combobox-react [role="option"] {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: baseline;
+  gap: 0.5rem;
+  width: 100%;
+  cursor: default;
+  border-radius: 0.5rem;
+  padding: 0.625rem 0.5rem 0.625rem 0.875rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--catalyst-text-color);
+  transition: background-color 0.15s ease-in-out;
+}
+
+.heroicons-combobox-react [role="option"]:hover,
+.heroicons-combobox-react [role="option"][data-focus] {
+  background-color: var(--catalyst-accent-color);
+  color: white;
+}
+
+.heroicons-combobox-react [role="option"][data-disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.heroicons-option__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 0.75rem;
+  flex-shrink: 0;
+}
+
+/* Option content layout */
+.heroicons-combobox-react [role="option"] > span:first-child {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+/* Selection checkmark */
+.heroicons-combobox-react [role="option"] svg {
+  position: relative;
+  width: 1.25rem;
+  height: 1.25rem;
+  stroke: currentColor;
+  display: none;
+}
+
+.heroicons-combobox-react [role="option"][data-selected] svg {
+  display: inline;
+}
+
+/* Icon preview styling */
+.heroicons-preview {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heroicons-preview__placeholder {
+  background-color: #e5e7eb;
+  border-radius: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #d1d5db;
+}
+
+/* Responsive sizing for icon previews */
+.h-6 { height: 1.5rem; }
+.w-6 { width: 1.5rem; }
+.h-5 { height: 1.25rem; }
+.w-5 { width: 1.25rem; }
+.h-4 { height: 1rem; }
+.w-4 { width: 1rem; }
+
+/* Utility classes for layout */
+.flex { display: flex; }
+.items-center { align-items: center; }
+.min-w-0 { min-width: 0; }
+.ml-2\.5 { margin-left: 0.625rem; }
+.truncate { 
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.first\:ml-0:first-child { margin-left: 0; }
+
+
+/* Ensure proper focus styling */
+.heroicons-combobox-react [data-slot="control"]:focus-within::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: var(--catalyst-border-radius);
+  box-shadow: var(--catalyst-focus-ring);
+  pointer-events: none;
+}

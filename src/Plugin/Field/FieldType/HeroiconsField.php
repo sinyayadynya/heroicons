@@ -57,4 +57,15 @@ class HeroiconsField extends FieldItemBase {
     return $properties;
   }
 
+  /**
+   * {@inheritdoc}
+   */
+  public function isEmpty() {
+    $icon_name = $this->get('icon_name')->getValue();
+    $icon_style = $this->get('icon_style')->getValue();
+    
+    // Field is empty if icon_name is empty (style can have a default)
+    return empty($icon_name);
+  }
+
 }

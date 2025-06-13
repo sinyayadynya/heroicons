@@ -1,46 +1,60 @@
-alpine:
-  remote: https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js
-  version: 3.x
-  js:
-    https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js: { type: external, minified: true }
+react:
+  remote: https://unpkg.com/react@18/umd/react.production.min.js
+  version: 18.x
   license:
     name: MIT
-    url: https://github.com/alpinejs/alpine/blob/master/LICENSE
+    url: https://github.com/facebook/react/blob/main/LICENSE
     gpl-compatible: true
-
-alpine_virtual:
-  remote: https://cdn.jsdelivr.net/npm/@alpinejs/virtual@3.x.x/dist/cdn.min.js
-  version: 3.x
   js:
-    https://cdn.jsdelivr.net/npm/@alpinejs/virtual@3.x.x/dist/cdn.min.js: { type: external, minified: true }
-  dependencies:
-    - heroicons/alpine
+    https://unpkg.com/react@18/umd/react.production.min.js: { type: external, minified: true, weight: -20 }
+
+react_dom:
+  remote: https://unpkg.com/react-dom@18/umd/react-dom.production.min.js
+  version: 18.x
   license:
     name: MIT
-    url: https://github.com/alpinejs/alpine/blob/master/LICENSE
+    url: https://github.com/facebook/react/blob/main/LICENSE
     gpl-compatible: true
-
-headless_ui:
-  remote: https://cdn.jsdelivr.net/npm/@headlessui/alpine@1.0.7/dist/headlessui.min.js
-  version: 1.0.7
   js:
-    https://cdn.jsdelivr.net/npm/@headlessui/alpine@1.0.7/dist/headlessui.min.js: { type: external, minified: true }
+    https://unpkg.com/react-dom@18/umd/react-dom.production.min.js: { type: external, minified: true, weight: -19 }
   dependencies:
-    - heroicons/alpine
+    - heroicons/react
+    
+clsx:
+  remote: https://unpkg.com/clsx@2.0.0/dist/clsx.min.js
+  version: 2.0.0
+  license:
+    name: MIT
+    url: https://github.com/lukeed/clsx/blob/master/license
+    gpl-compatible: true
+  js:
+    https://unpkg.com/clsx@2.0.0/dist/clsx.min.js: { type: external, minified: true, weight: -18 }
+
+headlessui_react:
+  remote: https://unpkg.com/@headlessui/react@1.7.18/dist/headlessui.production.min.js
+  version: 1.7.18
   license:
     name: MIT
     url: https://github.com/tailwindlabs/headlessui/blob/main/LICENSE
     gpl-compatible: true
+  js:
+    https://unpkg.com/@headlessui/react@1.7.18/dist/headlessui.production.min.js: { type: external, minified: true, weight: -17 }
+  dependencies:
+    - heroicons/react
 
-combobox:
+react_widget:
   css:
     theme:
-      css/heroicons-combobox.css: {}
+      dist/style.css: {}
   js:
-    js/heroicons-combobox.js: {}
+    dist/widget.umd.js: { weight: -15 }
   dependencies:
-    - heroicons/alpine_virtual
-    - heroicons/headless_ui
+    - core/drupal
+    - core/drupalSettings
+    - heroicons/react
+    - heroicons/react_dom
+    - heroicons/clsx
+    - heroicons/headlessui_react
 
 sprite:
   css:

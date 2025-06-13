@@ -46,6 +46,8 @@ function heroicons_page_attachments(array &$attachments) {
     $attachments['#attached']['library'][] = 'heroicons/sprite';
     
     // Add the sprite template
+    // Temporarily disabled to debug HtmlTag error
+    /*
     $sprite_icons = heroicons_get_all_icon_names();
     $attachments['#attached']['html_head'][] = [
       [
@@ -54,6 +56,7 @@ function heroicons_page_attachments(array &$attachments) {
       ],
       'heroicons_sprite'
     ];
+    */
   }
 }
 

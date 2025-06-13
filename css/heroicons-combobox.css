@@ -30,8 +30,8 @@
   box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
 }
 
-/* Dropdown arrow icon */
-.heroicons-combobox::after {
+/* Dropdown arrow icon - positioned relative to search input */
+.heroicons-combobox .form-item-search::after {
   content: '';
   position: absolute;
   top: 50%;
@@ -47,20 +47,28 @@
   transition: transform 0.15s ease-in-out;
 }
 
+.heroicons-combobox .form-item-search {
+  position: relative;
+}
+
 .heroicons-combobox[x-data] .heroicons-combobox__input:focus + *::after,
 .heroicons-combobox[data-open="true"]::after {
   transform: translateY(-50%) rotate(180deg);
 }
 
+/* Search wrapper positioning */
+.heroicons-combobox__search-wrapper {
+  position: relative;
+}
+
 /* Dropdown container - Catalyst-inspired */
 .heroicons-combobox__dropdown {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 4px); /* Position right below the search input */
   left: 0;
   right: 0;
-  z-index: 50;
-  margin-top: 4px;
-  max-height: 240px;
+  z-index: 9999; /* High z-index to ensure it's above other elements */
+  max-height: 300px; /* Increased height for better browsing */
   overflow: hidden; /* Let virtual scroll handle overflow */
   background-color: #ffffff;
   border: 1px solid #e5e7eb; /* Slightly lighter border like Catalyst */
@@ -74,9 +82,10 @@
   margin: 0;
   list-style: none;
   position: relative;
-  max-height: 240px;
+  max-height: 300px; /* Match container height */
   overflow-y: auto;
 }
+
 
 /* Virtual scroll container */
 .heroicons-combobox__options[x-virtual] {
@@ -144,38 +153,7 @@
   margin-top: 8px;
 }
 
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-  .heroicons-combobox__input {
-    background-color: #1f2937;
-    border-color: #374151;
-    color: #f9fafb;
-  }
-
-  .heroicons-combobox__input:focus {
-    border-color: #3b82f6;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.25);
-  }
-
-  .heroicons-combobox__dropdown {
-    background-color: #1f2937;
-    border-color: #374151;
-  }
-
-  .heroicons-combobox__option {
-    color: #f9fafb;
-  }
-
-  .heroicons-combobox__option:hover,
-  .heroicons-combobox__option--active {
-    background-color: #3b82f6;
-    color: #ffffff;
-  }
-
-  .heroicons-combobox__icon {
-    color: #9ca3af;
-  }
-}
+/* Remove dark mode - keeping light theme only */
 
 /* Transitions */
 .heroicons-combobox__dropdown[x-transition] {

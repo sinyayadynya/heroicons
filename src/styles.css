@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+/* Force light mode only - preserve all other Catalyst styles */
+[data-heroicons-react-widget] {
+  color-scheme: light !important;
+}
