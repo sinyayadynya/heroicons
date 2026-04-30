@@ -12,8 +12,5 @@ dependencies:
 project: 'heroicons'
 version: '2.0.0'
 
-# Configure module
-configure: 'field_ui.overview_form_display'
-
 # Lifecycle status
 lifecycle: stable

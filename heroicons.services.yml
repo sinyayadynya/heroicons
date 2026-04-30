@@ -1,0 +1,10 @@
+services:
+  heroicons.manager:
+    class: Drupal\heroicons\HeroiconManager
+    arguments: ['@module_handler']
+
+  heroicons.twig_extension:
+    class: Drupal\heroicons\Twig\HeroiconsExtension
+    arguments: ['@heroicons.manager']
+    tags:
+      - { name: twig.extension }

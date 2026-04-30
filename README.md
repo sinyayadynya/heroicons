@@ -97,6 +97,23 @@ npm install   # Install dependencies
 npm run build # Build the component
 ```
 
+### Twig helper functions
+
+Use the Twig helpers to render icons anywhere in Drupal templates:
+
+```twig
+{{ heroicon('bolt', {
+  style: 'solid',
+  attributes: { class: 'h-5 w-5 text-primary-500', 'aria-hidden': 'true' }
+}) }}
+
+{% if heroicon_exists('academic-cap') %}
+  {{ heroicon('academic-cap', { style: 'outline', attributes: { class: 'h-8 w-8', 'aria-label': 'Education' } }) }}
+{% endif %}
+```
+
+Need to audit available icons? Call `heroicon_list()` (optionally with a style) and iterate the results.
+
 ### Customization
 
 The widget uses TailwindCSS classes and can be customized by overriding styles:

@@ -2,6 +2,7 @@
 	"name": "drupal/heroicons",
 	"type": "drupal-module",
 	"description": "A modern field type for selecting and displaying Heroicons with a React-powered searchable interface",
+	"version": "2.0.x-dev",
 	"keywords": ["drupal", "field", "icons", "heroicons", "react", "svg"],
 	"homepage": "https://www.drupal.org/project/heroicons",
 	"license": "GPL-2.0-or-later",
